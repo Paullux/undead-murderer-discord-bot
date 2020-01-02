@@ -20,9 +20,9 @@ const Pause = require("./MusicCommands/Pause");
 console.log("MusicCommands Pause chargée");
 const Resume = require("./MusicCommands/Resume");
 console.log("MusicCommands Resume chargée");
-/**const Queue = require("./MusicCommands/Queue");
+const Queue = require("./MusicCommands/Queue");
 console.log("MusicCommands Queue chargée");
-const Skip = require("./MusicCommands/Skip");
+/**const Skip = require("./MusicCommands/Skip");
 console.log("MusicCommands Skip chargée");
 const Playing = require("./MusicCommands/Playing");
 console.log("MusicCommands Playing chargée");
@@ -53,7 +53,7 @@ setInterval(() => {
 }, 280000);
 
 client.on('message', (msg) => {
-  let commandUsed = Play.parse(msg) || Stop.parse(msg) || Volume.parse(msg) || Pause.parse(msg) || Resume.parse(msg) || Help.parse(msg) || Video.parse(msg) || Test.parse(msg); //|| Queue.parse(msg) || Skip.parse(msg) || Playing.parse(msg);
+  let commandUsed = Play.parse(msg) || Stop.parse(msg) || Volume.parse(msg) || Pause.parse(msg) || Resume.parse(msg) || Help.parse(msg) || Video.parse(msg) || Test.parse(msg) || Queue.parse(msg); //|| Skip.parse(msg) || Playing.parse(msg);
   var answer = '';
   if (msg.channel.id == 521754132500054016) {
     if ((msg.content.toLowerCase().startsWith('hello'))
