@@ -19,7 +19,6 @@
     "bufferutil": "^4.0.0",
     "discord.js": "^11.5.1",
     "dotenv": "^8.1.0",
-    "express.js": "1.0.0",
     "erlpack": "discordapp/erlpack",
     "es6-promise": "^4.2.5",
     "express": "^4.17.1",
