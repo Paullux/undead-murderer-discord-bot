@@ -64,7 +64,7 @@ function accessDispatcher(message) {
     voiceChannel.join().then(function(connection) {
       if (playlist.length !== 0) {
         console.log(playlist.length);
-        if (playlist.length == 1 && instruction.toLowerCase() == "_play") {
+        if (playlist.length !== 0 && instruction.toLowerCase() == "_play") {
           playAgain();
         }
         function playAgain() {
@@ -128,9 +128,11 @@ function accessDispatcher(message) {
         }
         if (instruction.toLowerCase() == "_queue") {
           if (playlist.length !== 0) {
+            j=1;
             for (var i = 0; i <= playlist.length - 1; i++) {
               ytdl.getInfo(`${playlist[i]}`, function(err, info) {
-                message.reply(`🃏 La Chanson ${i} est ${info.title} 🃏`);
+                message.reply(`🃏 La Chanson ${j} est ${info.title} 🃏`);
+                j+=1;
               });
             }
           } else {
