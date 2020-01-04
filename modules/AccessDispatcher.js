@@ -6,6 +6,12 @@ const cleYT = process.env.YOUTUBE;
 const youtube = new YouTube(cleYT);
 const yturl = null;
 const playlist = [];
+var isPlaying = false;
+const songsName = [];
+const { getInfo } = require("ytdl-getinfo");
+const songURL = "";
+const songTitle = "";
+const answer = "";
 
 function accessDispatcher(message) {
   if (typeof dispatcher !== "undefined" && dispatcher) {
@@ -40,13 +46,16 @@ function accessDispatcher(message) {
       youtube
         .searchVideos(argument, 4)
         .then(results => {
+          songTitle = results[0].title;
           message.reply(
-            `🎶🎵 Nouveau titre ajouté à la liste de lecture  💿 **${results[0].title}** 💿 ! 🎵🎶`
+            `🎶🎵 Nouveau titre ajouté à la liste de lecture  💿 **${songTitle}** 💿 ! 🎵🎶`
           );
+          songsName.push(`${songTitle}`)
           return playlist.push(`${results[0].url}`);
         })
         .catch(function(error) {
           console.log(error);
+          songsName.push("Windows XP ERROR Song");
           playlist.push("https://www.youtube.com/watch?v=yxxyjDFnbb0");
           message.reply(
             `🎶🎵 Nouveau titre ajouté à la liste de lecture  💿 **Windows XP ERROR Song** 💿 ! 🎵🎶`
@@ -56,6 +65,7 @@ function accessDispatcher(message) {
           );
         });
     }
+
     let voiceChannel = message.guild.channels
       .filter(function(channel) {
         return channel.type === "voice";
@@ -64,7 +74,8 @@ function accessDispatcher(message) {
     voiceChannel.join().then(function(connection) {
       if (playlist.length !== 0) {
         console.log(playlist.length);
-        if (playlist.length !== 0 && instruction.toLowerCase() == "_play") {
+        if (!isPlaying && instruction.toLowerCase() == "_play") {
+          isPlaying = true;
           playAgain();
         }
         function playAgain() {
@@ -73,6 +84,7 @@ function accessDispatcher(message) {
           if (instruction.toLowerCase() == "_play") {
             stream.on("error", function() {
               playlist[playlist.length] = null;
+              songsName[playlist.length] = null;
               connection.disconnect();
               message.reply(`😥 Echec de la d'ajout de la musique ! 😥`);
             });
@@ -80,8 +92,12 @@ function accessDispatcher(message) {
             dispatcher = connection.playStream(stream);
             dispatcher.on("end", function() {
               playlist.shift();
+              songsName.shift();
               if (playlist.length !== 0) {
                 playAgain();
+              } else {
+                isPlaying = false;
+                stop(message);
               }
             });
             dispatcher.on("error", function() {
@@ -126,21 +142,22 @@ function accessDispatcher(message) {
             message.reply("😥 En attente de la lecture de musique 😥");
           }
         }
+        if (instruction.toLowerCase() == "_stop") {
+          stop(message);
+        }
         if (instruction.toLowerCase() == "_queue") {
           if (playlist.length !== 0) {
-            j=1;
-            for (var i = 0; i <= playlist.length - 1; i++) {
-              ytdl.getInfo(`${playlist[i]}`, function(err, info) {
-                message.reply(`🃏 La Chanson ${j} est ${info.title} 🃏`);
-                j+=1;
-              });
+            for (var i = 0; i < playlist.length; i++) {
+              var titreMorceau = songsName[i];
+              if (i == 0) {
+                message.reply(`🃏 La Chanson en cours est ${titreMorceau} 🃏`);
+              } else {
+                message.reply(`🃏 La Chanson suivante est ${titreMorceau} 🃏`);
+              }
             }
           } else {
             message.reply("🃏 Liste de lecture vide 🃏");
           }
-        }
-        if (playlist.length == 0) {
-          connection.disconnect();
         }
       }
     });
@@ -150,6 +167,23 @@ function accessDispatcher(message) {
       "😥 Vous devez envoyer vos requêtes sur le salon 🤖-discussions-avec-le-bot-🤖 😥"
     );
   }
+  if (!isPlaying && instruction.toLowerCase() !== "_play") {
+    stop(message);
+  }
+}
+function stop(message) {
+  if (typeof dispatcher !== "undefined" && dispatcher) {
+    dispatcher.destroy();
+  }
+  let voiceChannel = message.guild.channels
+    .filter(function(channel) {
+      return channel.type === "voice";
+    })
+    .first();
+  voiceChannel.join();
+  voiceChannel.leave();
+  songsName.length = 0;
+  playlist.length = 0;
 }
 
 module.exports = accessDispatcher;
