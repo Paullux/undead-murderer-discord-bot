@@ -7,14 +7,7 @@ class Stop extends Command {
     return message.content.toLowerCase().startsWith('_stop')
   }
   static action (message) {
-    let voiceChannel = message.guild.channels
-      .filter(function (channel) { return channel.type === 'voice' })
-      .first();
-
-    voiceChannel.join();
-    voiceChannel.leave();
-    accessDispatcher.playlist = null;
-
+    accessDispatcher(message);
     return message.reply("⏹️ Musique Arrêtée à votre demande ⏹️");
   }
 }
