@@ -2,13 +2,13 @@ const Command = require("../modules/Command");
 
 const accessDispatcher = require('../modules/AccessDispatcher');
 
-class Skip extends Command {
+class Now extends Command {
   static match (message) {
-    return message.content.toLowerCase().startsWith('_skip')
+    return message.content.toLowerCase().startsWith('_now')
   }
   static action (message) {
       accessDispatcher (message);
   }
 }
 
-module.exports = Skip;
+module.exports = Now;
