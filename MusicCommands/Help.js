@@ -13,12 +13,14 @@ class Help extends Command {
     "\n" +
     "B - Écouter de la musique \: \n" +
     "  1 - Connectez-vous au chat vocal \"🎶-Musique-🎶\" ;\n" +
-    "  2 - Pour lancer une musique, il suffit d\'entrer la commande suivant _play suivi de mots clés à rechercher ;\n" +
-    "  3 - Pour mettre en pause la lecture de musique il suffit d\'entrer la commande _pause ; \n" +
-    "  4 - Pour reprendre la lecture de musique il suffit d\'entrer la commande _resume ; \n" +
+    "  2 - Pour lancer une musique, il suffit d\'entrer la commande suivant \"_play\" suivi de mots clés à rechercher ;\n" +
+    "  3 - Pour mettre en pause la lecture de musique il suffit d\'entrer la commande \"_pause\n ; \n" +
+    "  4 - Pour reprendre la lecture de musique il suffit d\'entrer la commande \"_resume\" ; \n" +
     "  5 - Pour régler le volume la commande est \"_volume\", sans argument la commande renvoit le volume actuel, avec un argument entre 0 et 120, la commande règle le volume au niveau désiré ; \n" +
     "  6 - Pour arrêter la musique, la commande est \"_stop\" ;\n" +
     "  7 - Pour connaitre la liste des chansons à venir entrez la commande \"_queue\"; \n" +
+    "  8 - Pour connaitre la musique qui est lu en ce moment, la commande est : \"_now\" ; \n" +
+    "  9 - Pour passer la musique en cours à la suivante, il faut entrer la commande \"_skip\" \n" +
     "\n" +
     "C - Regarder des vidéos YouTube \: \n" +
     "  1 - Lancer la commande \"_video\" suivi des mots clés à rechercher ;\n" +

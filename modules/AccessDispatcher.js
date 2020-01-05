@@ -9,9 +9,7 @@ const playlist = [];
 var isPlaying = false;
 const songsName = [];
 const { getInfo } = require("ytdl-getinfo");
-const songURL = "";
-const songTitle = "";
-const answer = "";
+var songTitle = "";
 
 function accessDispatcher(message) {
   if (typeof dispatcher !== "undefined" && dispatcher) {
@@ -46,11 +44,11 @@ function accessDispatcher(message) {
       youtube
         .searchVideos(argument, 4)
         .then(results => {
-          songTitle = results[0].title;
+          songTitle = `${results[0].title}`;
           message.reply(
             `🎶🎵 Nouveau titre ajouté à la liste de lecture  💿 **${songTitle}** 💿 ! 🎵🎶`
           );
-          songsName.push(`${songTitle}`)
+          songsName.push(`${songTitle}`);
           return playlist.push(`${results[0].url}`);
         })
         .catch(function(error) {
@@ -83,10 +81,8 @@ function accessDispatcher(message) {
           let stream = ytdl(url, { filter: "audioonly" });
           if (instruction.toLowerCase() == "_play") {
             stream.on("error", function() {
-              playlist[playlist.length] = null;
-              songsName[playlist.length] = null;
               connection.disconnect();
-              message.reply(`😥 Echec de la d'ajout de la musique ! 😥`);
+              return message.reply(`😥 Echec de la d'ajout de la musique ! 😥`);
             });
 
             dispatcher = connection.playStream(stream);
@@ -158,6 +154,18 @@ function accessDispatcher(message) {
           } else {
             message.reply("🃏 Liste de lecture vide 🃏");
           }
+        }
+        if (instruction.toLowerCase() == "_now") {
+          if (playlist.length !== 0) {
+            message.reply(`🃏 La Chanson en cours est ${songsName[0]} 🃏`);
+          } else {
+            message.reply("🃏 Aucun Morceau en lecture 🃏");
+          }
+        }
+        if (instruction.toLowerCase() == "_skip") {
+          if (typeof dispatcher !== "undefined" && dispatcher) {
+             dispatcher.end();
+           }
         }
       }
     });
