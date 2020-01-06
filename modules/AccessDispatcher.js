@@ -21,7 +21,7 @@ async function accessDispatcher(message) {
 
   if (!message.member.voiceChannel) {
     return message.reply(
-      "**N'oubliez pas de vous connecter sur un canal vocal avant de taper cette commande**"
+      "**N'oubliez pas de vous connecter sur le canal vocal 🔊  🎶-Musique-🎶 avant de taper cette commande**"
     );
   }
   if (message.channel.id == 521754132500054016) {
