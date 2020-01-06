@@ -11,7 +11,7 @@ const songsName = [];
 const { getInfo } = require("ytdl-getinfo");
 var songTitle = "";
 
-function accessDispatcher(message) {
+async function accessDispatcher(message) {
   if (typeof dispatcher !== "undefined" && dispatcher) {
     const dispatcher = null;
   }
@@ -69,106 +69,129 @@ function accessDispatcher(message) {
         return channel.type === "voice";
       })
       .first();
-    voiceChannel.join().then(function(connection) {
-      if (playlist.length !== 0) {
-        console.log(playlist.length);
-        if (!isPlaying && instruction.toLowerCase() == "_play") {
-          isPlaying = true;
-          playAgain();
-        }
-        function playAgain() {
-          let url = "" + playlist[0];
-          let stream = ytdl(url, { filter: "audioonly" });
-          if (instruction.toLowerCase() == "_play") {
-            stream.on("error", function() {
-              connection.disconnect();
-              return message.reply(`😥 Echec de la d'ajout de la musique ! 😥`);
-            });
+      await voiceChannel
+        .join()
+        .then(function(connection) {
+          if (playlist.length !== 0) {
+            //console.log(playlist.length);
+            if (!isPlaying && instruction.toLowerCase() == "_play") {
+              isPlaying = true;
+              playAgain();
+            }
+            function playAgain() {
+              let url = "" + playlist[0];
+              let stream = ytdl(url, { filter: "audioonly" });
+              if (instruction.toLowerCase() == "_play") {
+                stream.on("error", function() {
+                  connection.disconnect();
+                  return message.reply(
+                    `😥 Echec de la d'ajout de la musique ! 😥`
+                  );
+                });
 
-            dispatcher = connection.playStream(stream);
-            dispatcher.on("end", function() {
-              playlist.shift();
-              songsName.shift();
+                dispatcher = connection.playStream(stream);
+                dispatcher.on("end", function() {
+                  playlist.shift();
+                  songsName.shift();
+                  if (playlist.length !== 0) {
+                    playAgain();
+                  } else {
+                    isPlaying = false;
+                    stop(message);
+                  }
+                });
+                dispatcher.on("error", function() {
+                  message.reply("😥 Erreur durant la lecture du Morceau ! 😥");
+                });
+              }
+            }
+            if (instruction.toLowerCase() == "_volume") {
+              if (typeof dispatcher !== "undefined" && dispatcher) {
+                if (!argument) {
+                  return message.reply(
+                    `**Le volume** actuel est de : **${60 *
+                      dispatcher.volume}%**`
+                  );
+                }
+                dispatcher.setVolume(argument / 60);
+                message.reply(
+                  `**Le volume** est maintenant de : **${60 *
+                    dispatcher.volume}%**`
+                );
+              } else {
+                message.reply("😥 En attente de la lecture de musique 😥");
+              }
+            }
+            if (instruction.toLowerCase() == "_pause") {
+              if (typeof dispatcher !== "undefined" && dispatcher) {
+                if (!dispatcher.paused) {
+                  dispatcher.pause();
+                  message.reply("⏯️ La musique est en pause ! ⏯️");
+                }
+              } else {
+                message.reply("😥 En attente de la lecture de musique 😥");
+              }
+            }
+            if (instruction.toLowerCase() == "_resume") {
+              if (typeof dispatcher !== "undefined" && dispatcher) {
+                if (dispatcher.paused) {
+                  dispatcher.resume();
+                  message.reply(
+                    "⏯️ La musique qui était en pause est relancé ! ⏯️"
+                  );
+                }
+              } else {
+                message.reply("😥 En attente de la lecture de musique 😥");
+              }
+            }
+            if (instruction.toLowerCase() == "_stop") {
+              songsName.length = 0;
+              playlist.length = 0;
+              if (typeof dispatcher !== "undefined" && dispatcher) {
+                dispatcher.end();
+              }
+              isPlaying = false;
+              stop(message);
+            }
+            if (instruction.toLowerCase() == "_queue") {
               if (playlist.length !== 0) {
-                playAgain();
+                for (var i = 0; i < playlist.length; i++) {
+                  var titreMorceau = songsName[i];
+                  if (i == 0) {
+                    message.reply(
+                      `🃏 La Chanson en cours est ${titreMorceau} 🃏`
+                    );
+                  } else {
+                    message.reply(
+                      `🃏 La Chanson suivante est ${titreMorceau} 🃏`
+                    );
+                  }
+                }
               } else {
-                isPlaying = false;
-                stop(message);
-              }
-            });
-            dispatcher.on("error", function() {
-              message.reply("😥 Erreur durant la lecture du Morceau ! 😥");
-            });
-          }
-        }
-        if (instruction.toLowerCase() == "_volume") {
-          if (typeof dispatcher !== "undefined" && dispatcher) {
-            if (!argument) {
-              return message.reply(
-                `**Le volume** actuel est de : **${60 * dispatcher.volume}%**`
-              );
-            }
-            dispatcher.setVolume(argument / 60);
-            message.reply(
-              `**Le volume** est maintenant de : **${60 * dispatcher.volume}%**`
-            );
-          } else {
-            message.reply("😥 En attente de la lecture de musique 😥");
-          }
-        }
-        if (instruction.toLowerCase() == "_pause") {
-          if (typeof dispatcher !== "undefined" && dispatcher) {
-            if (!dispatcher.paused) {
-              dispatcher.pause();
-              message.reply("⏯️ La musique est en pause ! ⏯️");
-            }
-          } else {
-            message.reply("😥 En attente de la lecture de musique 😥");
-          }
-        }
-        if (instruction.toLowerCase() == "_resume") {
-          if (typeof dispatcher !== "undefined" && dispatcher) {
-            if (dispatcher.paused) {
-              dispatcher.resume();
-              message.reply(
-                "⏯️ La musique qui était en pause est relancé ! ⏯️"
-              );
-            }
-          } else {
-            message.reply("😥 En attente de la lecture de musique 😥");
-          }
-        }
-        if (instruction.toLowerCase() == "_stop") {
-          stop(message);
-        }
-        if (instruction.toLowerCase() == "_queue") {
-          if (playlist.length !== 0) {
-            for (var i = 0; i < playlist.length; i++) {
-              var titreMorceau = songsName[i];
-              if (i == 0) {
-                message.reply(`🃏 La Chanson en cours est ${titreMorceau} 🃏`);
-              } else {
-                message.reply(`🃏 La Chanson suivante est ${titreMorceau} 🃏`);
+                message.reply("🃏 Liste de lecture vide 🃏");
               }
             }
-          } else {
-            message.reply("🃏 Liste de lecture vide 🃏");
+            if (instruction.toLowerCase() == "_now") {
+              if (playlist.length !== 0) {
+                message.reply(`🃏 La Chanson en cours est ${songsName[0]} 🃏`);
+              } else {
+                message.reply("🃏 Aucun Morceau en lecture 🃏");
+              }
+            }
+            if (instruction.toLowerCase() == "_skip") {
+              if (typeof dispatcher !== "undefined" && dispatcher) {
+                dispatcher.end();
+              }
+            }
+          } else if (instruction.toLowerCase() !== stop) {
+            message.reply ("😥 En attente de la lecture de musique 😥")
           }
-        }
-        if (instruction.toLowerCase() == "_now") {
-          if (playlist.length !== 0) {
-            message.reply(`🃏 La Chanson en cours est ${songsName[0]} 🃏`);
-          } else {
-            message.reply("🃏 Aucun Morceau en lecture 🃏");
-          }
-        }
-        if (instruction.toLowerCase() == "_skip") {
-          if (typeof dispatcher !== "undefined" && dispatcher) {
-             dispatcher.end();
-           }
-        }
-      }
-    });
+        })
+        .catch(err =>
+          console.log("😥 En attente de la lecture de musique 😥" + err)
+        );
+    
+
     message.member.setVoiceChannel(voiceChannel);
   } else {
     message.reply(
@@ -179,7 +202,7 @@ function accessDispatcher(message) {
     stop(message);
   }
 }
-function stop(message) {
+async function stop(message) {
   if (typeof dispatcher !== "undefined" && dispatcher) {
     dispatcher.destroy();
   }
@@ -188,8 +211,16 @@ function stop(message) {
       return channel.type === "voice";
     })
     .first();
-  voiceChannel.join();
-  voiceChannel.leave();
+  try {
+    await voiceChannel.join();
+  } catch {
+    console.log("erreur à rejoindre le canal vocal");
+  }
+  try {
+    await voiceChannel.leave();
+  } catch {
+    console.log("erreur à quitter le canal vocal");
+  }
   songsName.length = 0;
   playlist.length = 0;
 }
