@@ -119,7 +119,7 @@ client.on("guildMemberAdd", member => {
     .sendMessage(`Bienvenue ${member.user} sur ce serveur.`)
     .catch(function(error) {
       client.channels
-        .find(x => x.name === "🗣-général-🗣")
+        .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
         .send(
           '__**Le client n\'a pas pu affficher "bienvenue-aux-nouveaux"**__'
         );
@@ -140,14 +140,14 @@ function requestSF() {
     })
     .then(function(myJson) {
       let newDownloads = myJson.summaries.time.downloads;
-      //client.channels.find(x => x.name === '🗣-général-🗣').send(newDownloads);
+      //client.channels.find(x => x.name === '🇫🇷-🗣-en-français-🗣-🇫🇷').send(newDownloads);
       if (nbDownloads != 0) {
         client.channels
-          .find(x => x.name === "📥-téléchargements-du-jeu-📥")
+          .find(x => x.name === "📥-game-dl-📥")
           .send("__**Attention nouvel affichage des téléchargements**__")
           .catch(function(error) {
             client.channels
-              .find(x => x.name === "🗣-général-🗣")
+              .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
               .send(
                 "__**Le client n'a pas pu affficher le badge des nouveaux téléchargements**__"
               );
@@ -157,63 +157,63 @@ function requestSF() {
         }
         if (nvxDownloads <= 1) {
           client.channels
-            .find(x => x.name === "📥-téléchargements-du-jeu-📥")
+            .find(x => x.name === "📥-game-dl-📥")
             .send({
               file: `https://img.shields.io/badge/Nouveau%20Téléchargement-${nvxDownloads}-orange.png`
             })
             .catch(function(error) {
               client.channels
-                .find(x => x.name === "🗣-général-🗣")
+                .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
                 .send(
                   "__**Le client n'a pas pu affficher le badge des nouveaux téléchargements**__"
                 );
             });
         } else {
           client.channels
-            .find(x => x.name === "📥-téléchargements-du-jeu-📥")
+            .find(x => x.name === "📥-game-dl-📥")
             .send({
               file: `https://img.shields.io/badge/Nouveaux%20Téléchargements-${nvxDownloads}-orange.png`
             })
             .catch(function(error) {
               client.channels
-                .find(x => x.name === "🗣-général-🗣")
+                .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
                 .send(
                   "__**Le client n'a pas pu affficher le badge des nouveaux téléchargements**__"
                 );
             });
         }
         client.channels
-          .find(x => x.name === "📥-téléchargements-du-jeu-📥")
+          .find(x => x.name === "📥-game-dl-📥")
           .send({
             file: `https://img.shields.io/badge/Téléchargements%20totaux-${newDownloads}-yellowgreen.png`
           })
           .catch(function(error) {
             client.channels
-              .find(x => x.name === "🗣-général-🗣")
+              .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
               .send(
                 "__**Le client n'a pas pu afficher le badge du total des téléchargements**__"
               );
           });
         client.channels
-          .find(x => x.name === "📥-téléchargements-du-jeu-📥")
+          .find(x => x.name === "📥-game-dl-📥")
           .send(
             "Lien de téléchargements https://sourceforge.net/projects/undead-murderer/"
           )
           .catch(function(error) {
             client.channels
-              .find(x => x.name === "🗣-général-🗣")
+              .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
               .send(
                 "__**Le client n'a pas pu afficher le lien de téléchargements**__"
               );
           });
         client.channels
-          .find(x => x.name === "📥-téléchargements-du-jeu-📥")
+          .find(x => x.name === "📥-game-dl-📥")
           .send({
             file: `https://img.shields.io/badge/platforme-mac%20%7C%20linux%20%7C%20win-lightgrey.png`
           })
           .catch(function(error) {
             client.channels
-              .find(x => x.name === "🗣-général-🗣")
+              .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
               .send("__**Le client n'a pas pu afficher le bagde des OS**__");
           });
         nbDownloads = newDownloads;
@@ -223,7 +223,7 @@ function requestSF() {
     })
     .catch(function(error) {
       client.channels
-        .find(x => x.name === "🗣-général-🗣")
+        .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
         .send("__**Le client n'a pas pu récupérer le fichier json**__");
     });
 }
