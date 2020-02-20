@@ -42,6 +42,7 @@
     "simple-youtube-api": "^5.2.1",
     "sodium": "^3.0.2",
     "uws": "^100.0.1",
-    "ytdl-core": "^1.0.5"
+    "ytdl-core": "^1.0.5", 
+    "ytdl-getinfo": "^1.1.0"
   }
 }
