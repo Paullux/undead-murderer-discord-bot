@@ -1,9 +1,9 @@
 const ytdl = require("ytdl-core");
 const { Util } = require("discord.js");
 const opus = require("node-opus");
-const YouTube = require("simple-youtube-api");
+const YouTubeR = require("simple-youtube-api");
 const cleYT = process.env.YOUTUBE;
-const youtube = new YouTube(cleYT);
+const youtube = new YouTubeR(cleYT);
 const yturl = null;
 const playlist = [];
 var isPlaying = false;
