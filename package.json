@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.1.0",
     "@discordjs/uws": "^11.149.1",
     "better-sqlite3": "^5.4.3",
     "bufferutil": "^4.0.1",
