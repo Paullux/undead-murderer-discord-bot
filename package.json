@@ -33,7 +33,7 @@
     "m3u8stream": "^0.6.5",
     "nan": "^2.14.0",
     "node": "^13.8.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "node-gyp": "^6.1.0",
     "node-opus": "^0.3.3",
     "opusscript": "^0.0.7",
