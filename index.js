@@ -10,7 +10,6 @@ const path = require("path");
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
 
-
 const Play = require("./MusicCommands/Play");
 console.log("MusicCommands Play chargée");
 const Stop = require("./MusicCommands/Stop");
@@ -32,7 +31,7 @@ console.log("MusicCommands Help chargée");
 const Video = require("./MusicCommands/Video");
 console.log("MusicCommands Video chargée");
 const Test = require("./MusicCommands/Test");
-console.log("MusicCommands Test chargée")
+console.log("MusicCommands Test chargée");
 
 /**
 const comandFiles = fs.readdirSync('./MusicCommands').filter(file => file.endsWith('.js'));
@@ -82,7 +81,7 @@ client.on("message", msg => {
       msg.content.toLowerCase().startsWith("coucou") ||
       msg.content.toLowerCase().startsWith("hey") ||
       (msg.content.toLowerCase().startsWith("salut") &&
-        msg.author.username !== "🧟 Undead_Murderer 🧟")
+        msg.author.username !== "🧟 Undead_&_Zombies 🧟")
     ) {
       answer = `Salut, comment vas-tu ${msg.author} ?`;
       msg.channel.send(answer);
@@ -97,6 +96,12 @@ client.on("message", msg => {
     if (msg.content.toLowerCase().startsWith("ça va")) {
       answer = `Oui et toi ${msg.author} ?`;
       msg.channel.send(answer);
+    }
+    if (msg.content.toLowerCase().startsWith("_nbdl")) {
+      answer = `nb DL demandé`;
+      msg.channel.send(answer);
+      requestHOSDL(msg);
+      requestSF();
     }
   }
 });
@@ -118,7 +123,7 @@ client.on("guildMemberAdd", member => {
     .find(x => x.name === "👶-bienvenue-aux-nouveaux-👶")
     .sendMessage(`Bienvenue ${member.user} sur ce serveur.`)
     .catch(function(error) {
-      client.channels
+      client.channels.cache
         .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
         .send(
           '__**Le client n\'a pas pu affficher "bienvenue-aux-nouveaux"**__'
@@ -142,11 +147,11 @@ function requestSF() {
       let newDownloads = myJson.summaries.time.downloads;
       //client.channels.find(x => x.name === '🇫🇷-🗣-en-français-🗣-🇫🇷').send(newDownloads);
       if (nbDownloads != 0) {
-        client.channels
+        client.channels.cache
           .find(x => x.name === "📥-game-dl-📥")
           .send("__**Attention nouvel affichage des téléchargements**__")
           .catch(function(error) {
-            client.channels
+            client.channels.cache
               .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
               .send(
                 "__**Le client n'a pas pu affficher le badge des nouveaux téléchargements**__"
@@ -156,63 +161,63 @@ function requestSF() {
           nvxDownloads = newDownloads - nbDownloads;
         }
         if (nvxDownloads <= 1) {
-          client.channels
+          client.channels.cache
             .find(x => x.name === "📥-game-dl-📥")
             .send({
-              file: `https://img.shields.io/badge/Nouveau%20Téléchargement-${nvxDownloads}-orange.png`
+              file: `https://raster.shields.io/badge/Nouveau%20Téléchargement-${nvxDownloads}-orange.png`
             })
             .catch(function(error) {
-              client.channels
+              client.channels.cache
                 .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
                 .send(
                   "__**Le client n'a pas pu affficher le badge des nouveaux téléchargements**__"
                 );
             });
         } else {
-          client.channels
+          client.channels.cache
             .find(x => x.name === "📥-game-dl-📥")
-            .send({
-              file: `https://img.shields.io/badge/Nouveaux%20Téléchargements-${nvxDownloads}-orange.png`
-            })
+            .send(
+              `https://raster.shields.io/badge/Nouveaux%20Téléchargements-${nvxDownloads}-orange.png`
+            )
             .catch(function(error) {
-              client.channels
+              client.channels.cache
                 .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
                 .send(
                   "__**Le client n'a pas pu affficher le badge des nouveaux téléchargements**__"
                 );
             });
         }
-        client.channels
+        client.channels.cache
           .find(x => x.name === "📥-game-dl-📥")
-          .send({
-            file: `https://img.shields.io/badge/Téléchargements%20totaux-${newDownloads}-yellowgreen.png`
-          })
+          .send(
+            `https://raster.shields.io/badge/Téléchargements%20totaux-${newDownloads}-yellowgreen.png`
+          )
           .catch(function(error) {
-            client.channels
+            client.channels.cache
               .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
               .send(
                 "__**Le client n'a pas pu afficher le badge du total des téléchargements**__"
               );
           });
-        client.channels
+        client.channels.cache
           .find(x => x.name === "📥-game-dl-📥")
           .send(
             "Lien de téléchargements https://sourceforge.net/projects/undead-murderer/"
           )
           .catch(function(error) {
-            client.channels
+            client.channels.cache
               .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
               .send(
                 "__**Le client n'a pas pu afficher le lien de téléchargements**__"
               );
           });
-        client.channels
+        client.channels.cache
           .find(x => x.name === "📥-game-dl-📥")
-          .send({
-            file: `https://img.shields.io/badge/platforme-mac%20%7C%20linux%20%7C%20win-lightgrey.png`
-          })
+          .send(
+            `https://img.shields.io/badge/platforme-mac%20%7C%20linux%20%7C%20win-lightgrey.png`
+          )
           .catch(function(error) {
-            client.channels
+            client.channels.cache
               .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
               .send("__**Le client n'a pas pu afficher le bagde des OS**__");
           });
@@ -222,9 +227,126 @@ function requestSF() {
       }
     })
     .catch(function(error) {
-      client.channels
+      client.channels.cache
         .find(x => x.name === "🇫🇷-🗣-en-français-🗣-🇫🇷")
         .send("__**Le client n'a pas pu récupérer le fichier json**__");
     });
 }
+
+function dateAujourdui() {
+  var Aujourdui = new Date();
+  Aujourdui.setDate(Aujourdui.getDate() + 1);
+  Aujourdui = Aujourdui.toISODate();
+  return Aujourdui;
+}
+function dateSeptJour() {
+  var septJours = new Date();
+  septJours.setDate(septJours.getDate() - 7);
+  septJours = septJours.toISODate();
+  return septJours;
+}
+if (!Date.prototype.toISODate) {
+  Date.prototype.toISODate = function() {
+    return (
+      this.getFullYear() +
+      "-" +
+      ("0" + (this.getMonth() + 1)).slice(-2) +
+      "-" +
+      ("0" + this.getDate()).slice(-2)
+    );
+  };
+}
+
+function requestHOSDL(msg) {
+  var nbWeek;
+  var NbWeekURL = `https://www.dvkbuntu.org/nodejs/gettotal/?startdate=${dateSeptJour()}&enddate=${dateAujourdui()}`;
+  var nbWeekDV;
+  var NbWeekDVURL = `https://sourceforge.net/projects/dvkbuntu/files/stats/json?start_date=${dateSeptJour()}&end_date=${dateAujourdui()}`;
+  var nbWeekDVL;
+  var NbWeekDVLURL = `https://sourceforge.net/projects/dvkbuntulight/files/stats/json?start_date=${dateSeptJour()}&end_date=${dateAujourdui()}`;
+  fetch(NbWeekURL)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data1) {
+      fetch(NbWeekDVURL)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data2) {
+          fetch(NbWeekDVLURL)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(data3) {
+              nbWeek = `${data1.result[0].total}`;
+              nbWeekDV = `${data2.summaries.time.downloads}`;
+              nbWeekDVL = `${data3.summaries.time.downloads}`;
+              var weektot =
+                parseInt(nbWeek, 10) +
+                parseInt(nbWeekDV, 10) +
+                parseInt(nbWeekDVL, 10);
+              weektot = weektot.toString() + "%20cette%20semaine";
+              msg.channel.send(
+                `https://raster.shields.io/static/v1?message=${weektot}&labelColor=black&color=36393f&label=T%C3%A9l%C3%A9chargements%20DVKBuntu&style=for-the-badge`
+              );
+            })
+            .catch(err => {
+              throw err;
+            });
+        })
+        .catch(err => {
+          throw err;
+        });
+    })
+    .catch(err => {
+      throw err;
+    });
+
+  var nbTotal;
+  var nbTotalURL = `https://www.dvkbuntu.org/nodejs/gettotal/?startdate=2010-01-01&enddate=${dateAujourdui()}`;
+  var nbTotalDV;
+  var nbTotalDVURL = `https://sourceforge.net/projects/dvkbuntu/files/stats/json?start_date=2010-01-01&end_date=${dateAujourdui()}`;
+  var nbTotalDVL;
+  var nbTotalDVLURL = `https://sourceforge.net/projects/dvkbuntulight/files/stats/json?start_date=2010-01-01&end_date=${dateAujourdui()}`;
+  fetch(nbTotalURL)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data1) {
+      fetch(nbTotalDVURL)
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data2) {
+          fetch(nbTotalDVLURL)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(data3) {
+              nbTotal = `${data1.result[0].total}`;
+              nbTotalDV = `${data2.total}`;
+              nbTotalDVL = `${data3.total}`;
+              var Totaltot =
+                parseInt(nbTotal, 10) +
+                parseInt(nbTotalDV, 10) +
+                parseInt(nbTotalDVL, 10);
+              Totaltot = Totaltot.toString() + "%20au%20total";
+              msg.channel.send(
+                `https://raster.shields.io/static/v1?message=${Totaltot}&label=T%C3%A9l%C3%A9chargements%20dvkbuntu&labelColor=black&style=for-the-badge&color=36393f`
+              );
+            })
+            .catch(err => {
+              throw err;
+            });
+        })
+        .catch(err => {
+          throw err;
+        });
+    })
+    .catch(err => {
+      throw err;
+    });
+}
+
 client.login(token);
